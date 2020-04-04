@@ -45,10 +45,10 @@ app.use((req, res, next) => {
 * import routers here
 */
 
-const user = require('./api/routes/user');
-const auth = require('./api/routes/auth');
+const doctor = require('./api/routes/DoctorRoutes');
+const auth = require('./api/routes/AuthRoutes');
 
-app.use('/api/user', passport.authenticate('jwt', {session: false}), user);
+app.use('/api/doctor', doctor);
 app.use('/api/auth', auth);
 
 app.use((req,res,next) => {

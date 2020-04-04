@@ -6,11 +6,10 @@ const validateEmail = (email) => {
     return regex.test(email);
 };
 
-const userSchema = mongoose.Schema({
+const doctorSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     firstName: { type: String, required: true },
-    lastNAme: { type: String, required: true },
-    dateOfBirth: { type: Date, required: true },
+    lastName: { type: String, required: true },
     email: {
         type: String,
         trim: true,
@@ -19,7 +18,10 @@ const userSchema = mongoose.Schema({
         validate: [validateEmail, 'Please fill a valid email address'],
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    cityOrRegion: { type: String, required: false },
+    hospitalName: { type: String, required: false },
+    country: { type: String, required: false }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Doctor', doctorSchema);
