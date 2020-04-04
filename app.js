@@ -5,12 +5,25 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const swaggerDoc = require('./swaggerDoc');
 const cors = require('cors');
+const passport = require('passport');
 
 app.use(cors());
 
 require('dotenv').config();
+require('./passport');
 
 swaggerDoc(app);
+
+const mongoDbString = process.env.DATABASE_URL;
+
+mongoose.connect(
+    mongoDbString,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false
+    }
+);
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -31,6 +44,12 @@ app.use((req, res, next) => {
 /*
 * import routers here
 */
+
+const user = require('./api/routes/user');
+const auth = require('./api/routes/auth');
+
+app.use('/api/user', passport.authenticate('jwt', {session: false}), user);
+app.use('/api/auth', auth);
 
 app.use((req,res,next) => {
     const error = new Error('Not found');
