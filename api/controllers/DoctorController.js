@@ -22,7 +22,6 @@ const saltRounds = process.env.SALT_ROUNDS;
  *                  - password
  *                  - firstName
  *                  - lastName
- *                  - dateOfBirth
  *              properties:
  *                  email:
  *                      type: string
@@ -36,9 +35,15 @@ const saltRounds = process.env.SALT_ROUNDS;
  *                  lastName:
  *                      type: string
  *                      example: Peric
- *                  dateOfBirth:
+ *                  cityOrRegion:
  *                      type: string
- *                      example: 1.1.1900.
+ *                      example: Zagreb
+ *                  hospitalName:
+ *                      type: string
+ *                      example: KBC Rebro
+ *                  country:
+ *                      type: string
+ *                      example: Croatia
  *      responses:
  *          201:
  *              description: User created
@@ -53,16 +58,22 @@ const saltRounds = process.env.SALT_ROUNDS;
  *                          example: example@gmail.com
  *                      password:
  *                          type: string
- *                          example: $2a$10$SEO21uquBC/YqHiJ4858Ee9PUZp2imf6Yfj4D6wetBksCbGJX66Ji
+ *                          example: password
  *                      firstName:
  *                          type: string
  *                          example: Pero
  *                      lastName:
  *                          type: string
  *                          example: Peric
- *                      dateOfBirth:
+ *                      cityOrRegion:
  *                          type: string
- *                          example: 1899-12-31T23:00:00.000Z
+ *                          example: Zagreb
+ *                      hospitalName:
+ *                          type: string
+ *                          example: KBC Rebro
+ *                      country:
+ *                          type: string
+ *                          example: Croatia
  * @param req
  * @param res
  * @param next
