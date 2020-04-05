@@ -4,72 +4,7 @@ const Mongoose = require('mongoose');
 const CalculateScore = require('../services/CalculateScore');
 
 /**
- * @swagger
- * /api/warning-score/{patientId}:
- *  post:
- *      security:
- *          - bearerAuth: []
- *      summary: Create a new warning score
- *      tags:
- *          - Warning score
- *      parameters:
- *          - in: path
- *            name: patientId
- *            require: true
- *            description: Patient ID
- *            schema:
- *              type: string
- *          - in: body
- *            name: body
- *            required: true
- *            schema:
- *              type: object
- *              required:
- *                  - years
- *                  - numberOfRespirations
- *                  - oxygenSaturation
- *                  - anyAdditionalO2
- *                  - systolicPressure
- *                  - heartRate
- *                  - stateOfConsciousness
- *                  - bodyTemperature
- *                  - coughDegree
- *              properties:
- *                  years:
- *                      type: integer
- *                      example: 30
- *                  numberOfRespirations:
- *                      type: integer
- *                      example: 15
- *                  oxygenSaturation:
- *                      type: integer
- *                      example: 30
- *                  anyAdditionalO2:
- *                      type: boolean
- *                      example: true
- *                  systolicPressure:
- *                      type: integer
- *                      example: 30
- *                  heartRate:
- *                      type: integer
- *                      example: 15
- *                  stateOfConsciousness:
- *                      type: string
- *                      example: Confused
- *                  bodyTemperature:
- *                      type: integer
- *                      format: float
- *                      example: 39.1
- *                  coughDegree:
- *                      type: integer
- *                      minimum: 1
- *                      maximum: 5
- *                      example: 4
- *      responses:
- *          201:
- *              description: Warning score added
- *
- *
+ * Add warning score
  *
  * @param req
  * @param res
@@ -106,4 +41,62 @@ exports.addWarningScore = (req, res, next) => {
             .then(r => res.status(201).json(r))
             .catch(e => res.status(500).json(e));
     });
+};
+
+/**
+ * Get warning score by id
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.getWaringScoreById = (req, res, next) => {
+
+    const { warningScoreId } = req.params;
+
+    WarningScore
+        .find({ _id: warningScoreId })
+        .exec()
+        .then(r => res.status(200).json(r))
+        .catch(e => res.status(500).json(e));
+};
+
+/**
+ * Delete warning score
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.deleteWarningScore = (req, res, next) => {
+
+    const { warningScoreId } = req.params;
+
+    WarningScore
+        .findOneAndDelete({ _id: warningScoreId })
+        .exec()
+        .then(() => res.status(204))
+        .catch(e => res.status(500).json(e));
+};
+
+/**
+ * Update warning score
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.updateWarningScore = (req, res, next) => {
+
+    const { warningScoreId } = req.params;
+    const { body } = req;
+
+    WarningScore
+        .findOneAndUpdate(
+            { _id: warningScoreId },
+            body,
+            { returnOriginal: false, new: true, upsert: true }
+        )
+        .then(r => res.status(200).json(r))
+        .catch(e => res.status(500).json(e));
 };

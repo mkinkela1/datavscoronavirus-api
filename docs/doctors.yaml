@@ -1,0 +1,142 @@
+paths:
+  /api/doctor:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get doctors
+      tags:
+        - Doctors
+      responses:
+        200:
+          description: Array of doctors
+          schema:
+            type: array
+            items:
+              $ref: '#definitions/doctorResponseModel'
+    post:
+      summary: Create a new doctor
+      tags:
+        - Doctors
+      parameters:
+        - in: body
+          require: true
+          schema:
+            $ref: '#definitions/doctorRequestModel'
+      responses:
+        201:
+          description: Doctor created
+          schema:
+            $ref: '#definitions/doctorResponseModel'
+        409:
+          description: User with that email already exists
+  /api/doctor/{doctorId}:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get doctor by ID
+      tags:
+        - Doctors
+      parameters:
+        - in: path
+          name: doctorId
+          require: true
+          description: Doctor ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: Array of doctors
+          schema:
+              $ref: '#definitions/doctorResponseModel'
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete doctor
+      tags:
+        - Doctors
+      parameters:
+        - in: path
+          name: doctorId
+          require: true
+          description: Doctor ID
+          schema:
+            type: string
+      responses:
+        204:
+          description: No content
+    put:
+      security:
+        - bearerAuth: []
+      summary: Get doctor by ID
+      tags:
+        - Doctors
+      parameters:
+        - in: path
+          name: doctorId
+          require: true
+          description: Doctor ID
+          schema:
+            type: string
+        - in: body
+          require: true
+          schema:
+            $ref: '#definitions/doctorRequestModel'
+      responses:
+        200:
+          description: Updated doctor
+          schema:
+            $ref: '#definitions/doctorResponseModel'
+
+
+definitions:
+  doctorRequestModel:
+    type: object
+    properties:
+      email:
+        type: string
+        example: example@gmail.com
+      password:
+        type: string
+        example: password
+      firstName:
+        type: string
+        example: Pero
+      lastName:
+        type: string
+        example: Peric
+      cityOrRegion:
+        type: string
+        example: Zagreb
+      hospitalName:
+        type: string
+        example: KBC Rebro
+      country:
+        type: string
+        example: Croatia
+  doctorResponseModel:
+    type: object
+    properties:
+      _id:
+        type: string
+        example: 5e893473bf0d866cf54ea713
+      email:
+        type: string
+        example: example@gmail.com
+      password:
+        type: string
+        example: password
+      firstName:
+        type: string
+        example: Pero
+      lastName:
+        type: string
+        example: Peric
+      cityOrRegion:
+        type: string
+        example: Zagreb
+      hospitalName:
+        type: string
+        example: KBC Rebro
+      country:
+        type: string
+        example: Croatia

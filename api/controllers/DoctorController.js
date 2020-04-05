@@ -2,78 +2,9 @@ const User = require('../models/doctor');
 const Mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const saltRounds = process.env.SALT_ROUNDS;
-
 /**
- * @swagger
- * /api/doctor:
- *  post:
- *      summary: Create a new doctor
- *      tags:
- *          - Doctors
- *      parameters:
- *          - in: body
- *            name: body
- *            required: true
- *            schema:
- *              type: object
- *              required:
- *                  - email
- *                  - password
- *                  - firstName
- *                  - lastName
- *              properties:
- *                  email:
- *                      type: string
- *                      example: example@gmail.com
- *                  password:
- *                      type: string
- *                      example: password
- *                  firstName:
- *                      type: string
- *                      example: Pero
- *                  lastName:
- *                      type: string
- *                      example: Peric
- *                  cityOrRegion:
- *                      type: string
- *                      example: Zagreb
- *                  hospitalName:
- *                      type: string
- *                      example: KBC Rebro
- *                  country:
- *                      type: string
- *                      example: Croatia
- *      responses:
- *          201:
- *              description: Doctor created
- *              schema:
- *                  type: object
- *                  properties:
- *                      _id:
- *                          type: string
- *                          example: 5e88faa643b9c63d5312e672
- *                      email:
- *                          type: string
- *                          example: example@gmail.com
- *                      password:
- *                          type: string
- *                          example: password
- *                      firstName:
- *                          type: string
- *                          example: Pero
- *                      lastName:
- *                          type: string
- *                          example: Peric
- *                      cityOrRegion:
- *                          type: string
- *                          example: Zagreb
- *                      hospitalName:
- *                          type: string
- *                          example: KBC Rebro
- *                      country:
- *                          type: string
- *                          example: Croatia
+ * Create a new doctor
+ *
  * @param req
  * @param res
  * @param next
@@ -107,5 +38,77 @@ exports.createDoctor = (req, res, next) => {
             }
         })
     });
+};
 
+/**
+ * Get doctor by Id
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.getDoctorById = (req, res, next) => {
+
+    const { doctorId } = req.params;
+
+    User
+        .findOne({ _id: doctorId })
+        .then(r => res.status(200).json(r))
+        .catch(e => res.status(500).json(e));
+};
+
+/**
+ * Get all doctors
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.getDoctors = (req, res, next) => {
+
+    User
+        .find({})
+        .then(r => res.status(200).json(r))
+        .catch(e => res.status(500).json(e));
+};
+
+/**
+ * Delete doctor
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.deleteDoctor = (req, res, next) => {
+
+    const { doctorId } = req.params;
+
+    User
+        .findOneAndDelete({ _id: doctorId })
+        .exec()
+        .then(() => res.status(204))
+        .catch(e => res.status(500).json(e));
+};
+
+/**
+ * Edit doctor
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.editDoctor = (req, res, next) => {
+
+    const { doctorId } = req.params;
+    const { body } = req;
+
+    User
+        .findOneAndUpdate(
+            { _id: doctorId },
+            body,
+            { returnOriginal: false, new: true, upsert: true }
+        )
+        .exec()
+        .then(r => res.status(200).json(r))
+        .catch(e => res.status(500).json(e));
 };

@@ -20,11 +20,12 @@ const options = {
                 }
             }
         },
-        security: [{
-            bearerAuth: []
-        }]
+        security: [
+            {},
+            {bearerAuth: []}
+        ]
     },
-    apis: ['./api/controllers/*.js']
+    apis: ['./docs/*.yaml', './api/controllers/*.js']
 };
 
 const specs = swaggerJsDoc(options);

@@ -6,6 +6,8 @@ require('./../../passport');
 
 const WarningScoreController = require('../controllers/WarningScoreController');
 
-Router.post('/:patientId', passport.authenticate('jwt', {session: false}), WarningScoreController.addWarningScore);
+Router.post('/patient/:patientId', passport.authenticate('jwt', {session: false}), WarningScoreController.addWarningScore);
+Router.get('/:warningScoreId', passport.authenticate('jwt', {session: false}), WarningScoreController.getWaringScoreById);
+Router.delete('/:warningScoreId', passport.authenticate('jwt', {session: false}), WarningScoreController.deleteWarningScore);
 
 module.exports = Router;

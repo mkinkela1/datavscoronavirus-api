@@ -1,0 +1,5 @@
+get all patients with warning scores 
+	- json
+	- csv export
+
+resolve an issue when not sending 409 when creating a new doctor using existing email

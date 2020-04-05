@@ -1,0 +1,150 @@
+paths:
+  /api/warning-score/patient/{patientId}:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Create a new warning score
+      tags:
+        - Warning score
+      parameters:
+        - in: path
+          name: patientId
+          require: true
+          description: Patient ID
+          schema:
+            type: string
+        - in: body
+          require: true
+          schema:
+            $ref: '#definitions/warningScoreRequestModel'
+      responses:
+        201:
+          description: Warning score added
+  /api/warning-score/{warningScoreId}:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get warning score
+      tags:
+        - Warning score
+      parameters:
+        - in: path
+          name: warningScoreId
+          require: true
+          description: Warning score ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: Warning score
+          schema:
+            $ref: '#definitions/warningScoreResponseModel'
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete warning score
+      tags:
+        - Warning score
+      parameters:
+        - in: path
+          name: warningScoreId
+          require: true
+          description: Warning score ID
+          schema:
+            type: string
+      responses:
+        204:
+          description: No content
+    put:
+      security:
+        - bearerAuth: []
+      summary: Update warning score
+      tags:
+        - Warning score
+      parameters:
+        - in: path
+          name: warningScoreId
+          require: true
+          description: Warning score ID
+          schema:
+            type: string
+        - in: body
+          require: true
+          schema:
+            $ref: '#definitions/warningScoreRequestModel'
+      responses:
+        200:
+          description: Warning score
+          schema:
+            $ref: '#definitions/warningScoreResponseModel'
+
+definitions:
+  warningScoreRequestModel:
+    type: object
+    properties:
+      years:
+        type: integer
+        example: 30
+      numberOfRespirations:
+        type: integer
+        example: 30
+      oxygenSaturation:
+        type: integer
+        example: 30
+      anyAdditionalO2:
+        type: boolean
+        example: true
+      systolicPressure:
+        type: integer
+        example: 30
+      heartRate:
+        type: integer
+        example: 15
+      stateOfConsciousness:
+        type: string
+        example: Confused
+      bodyTemperature:
+        type: integer
+        format: float
+        example: 39.1
+      coughDegree:
+        type: integer
+        minimum: 1
+        maximum: 5
+        example: 4
+  warningScoreResponseModel:
+    type: object
+    properties:
+      _id:
+        type: string
+        example: 5e894ad025d7063113ab66a8
+      years:
+        type: integer
+        example: 30
+      numberOfRespirations:
+        type: integer
+        example: 30
+      oxygenSaturation:
+        type: integer
+        example: 30
+      anyAdditionalO2:
+        type: boolean
+        example: true
+      systolicPressure:
+        type: integer
+        example: 30
+      heartRate:
+        type: integer
+        example: 15
+      stateOfConsciousness:
+        type: string
+        example: Confused
+      bodyTemperature:
+        type: integer
+        format: float
+        example: 39.1
+      coughDegree:
+        type: integer
+        minimum: 1
+        maximum: 5
+        example: 4
