@@ -21,7 +21,8 @@ const doctorSchema = mongoose.Schema({
     password: { type: String, required: true },
     cityOrRegion: { type: String, required: false },
     hospitalName: { type: String, required: false },
-    country: { type: String, required: false }
+    country: { type: String, required: false },
+    refreshToken: { type: String, required: false }
 });
 
 module.exports = mongoose.model('Doctor', doctorSchema);

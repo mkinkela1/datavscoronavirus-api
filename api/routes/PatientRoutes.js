@@ -7,6 +7,7 @@ const PatientController = require('../controllers/PatientController');
 
 Router.post('/', passport.authenticate('jwt', {session: false}), PatientController.createPatient);
 Router.get('/:patientId', PatientController.getPatientData);
+Router.get('/', PatientController.getAllPatients);
 Router.put('/:patientId', passport.authenticate('jwt', {session: false}), PatientController.editPatient);
 Router.delete('/:patientId', passport.authenticate('jwt', {session: false}), PatientController.deletePatient);
 

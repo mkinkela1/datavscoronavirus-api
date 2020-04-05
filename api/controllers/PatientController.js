@@ -94,3 +94,20 @@ exports.editPatient = (req, res, next) => {
         .then(r => res.status(200).json(r))
         .catch(e => res.status(500).json(e));
 };
+
+/**
+ * Get data of all patients
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.getAllPatients = (req, res, next) => {
+
+    Patient
+        .find({})
+        .populate('warningScores')
+        .exec()
+        .then(r => res.status(200).json(r))
+        .catch(e => res.status(500).json(e));
+};

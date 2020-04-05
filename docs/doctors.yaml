@@ -45,7 +45,7 @@ paths:
             type: string
       responses:
         200:
-          description: Array of doctors
+          description: Doctor data
           schema:
               $ref: '#definitions/doctorResponseModel'
     delete:

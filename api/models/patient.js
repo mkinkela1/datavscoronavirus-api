@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const patientSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
+    assignedDoctor: { type: String, required: false },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
