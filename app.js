@@ -47,9 +47,11 @@ app.use((req, res, next) => {
 
 const doctor = require('./api/routes/DoctorRoutes');
 const auth = require('./api/routes/AuthRoutes');
+const patient = require('./api/routes/PatientRoutes');
 
 app.use('/api/doctor', doctor);
 app.use('/api/auth', auth);
+app.use('/api/patient', passport.authenticate('jwt', {session: false}), patient);
 
 app.use((req,res,next) => {
     const error = new Error('Not found');

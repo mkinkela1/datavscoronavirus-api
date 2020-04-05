@@ -6,7 +6,7 @@ const saltRounds = process.env.SALT_ROUNDS;
 
 /**
  * @swagger
- * /doctor:
+ * /api/doctor:
  *  post:
  *      summary: Create a new doctor
  *      tags:
@@ -46,7 +46,7 @@ const saltRounds = process.env.SALT_ROUNDS;
  *                      example: Croatia
  *      responses:
  *          201:
- *              description: User created
+ *              description: Doctor created
  *              schema:
  *                  type: object
  *                  properties:

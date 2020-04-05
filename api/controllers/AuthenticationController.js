@@ -4,7 +4,7 @@ const passport = require('passport');
 const secretKey = process.env.SECRET_KEY;
 /**
  * @swagger
- * /auth/login:
+ * /api/auth/login:
  *  post:
  *      summary: Authenticate doctor
  *      tags:
