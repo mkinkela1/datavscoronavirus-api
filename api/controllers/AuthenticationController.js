@@ -10,8 +10,8 @@ const secretKey = process.env.SECRET_KEY;
  *      tags:
  *          - Auth
  *      parameters:
- *          - name: body
- *            in: body
+ *          - in: body
+ *            name: body
  *            required: true
  *            schema:
  *              type: object

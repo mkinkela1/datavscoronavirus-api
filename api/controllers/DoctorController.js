@@ -12,8 +12,8 @@ const saltRounds = process.env.SALT_ROUNDS;
  *      tags:
  *          - Doctors
  *      parameters:
- *          - name: body
- *            in: body
+ *          - in: body
+ *            name: body
  *            required: true
  *            schema:
  *              type: object

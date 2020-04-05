@@ -10,7 +10,6 @@ const passport = require('passport');
 app.use(cors());
 
 require('dotenv').config();
-require('./passport');
 
 swaggerDoc(app);
 
@@ -48,10 +47,12 @@ app.use((req, res, next) => {
 const doctor = require('./api/routes/DoctorRoutes');
 const auth = require('./api/routes/AuthRoutes');
 const patient = require('./api/routes/PatientRoutes');
+const warningScore = require('./api/routes/WarningScoreRoutes');
 
 app.use('/api/doctor', doctor);
 app.use('/api/auth', auth);
-app.use('/api/patient', passport.authenticate('jwt', {session: false}), patient);
+app.use('/api/patient', patient);
+app.use('/api/warning-score', warningScore);
 
 app.use((req,res,next) => {
     const error = new Error('Not found');

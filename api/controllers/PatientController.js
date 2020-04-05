@@ -1,4 +1,5 @@
 const Patient = require('../models/patient');
+const WarningScore = require('../models/warningScore');
 const Mongoose = require('mongoose');
 
 /**
@@ -11,8 +12,8 @@ const Mongoose = require('mongoose');
  *      tags:
  *          - Patients
  *      parameters:
- *          - name: body
- *            in: body
+ *          - in: body
+ *            name: body
  *            required: true
  *            schema:
  *              type: object
@@ -233,5 +234,51 @@ exports.createPatient = (req, res, next) => {
     patient
         .save()
         .then(r => res.status(200).json(r))
+        .catch(e => res.status(500).json(e));
+};
+
+/**
+ * @swagger
+ * /api/patient/{patientId}:
+ *  get:
+ *      summary: Get patient's data
+ *      tags:
+ *          - Patients
+ *      parameters:
+ *          - in: path
+ *            name: patientId
+ *            require: true
+ *            description: Patient ID
+ *            schema:
+ *              type: string
+ *      responses:
+ *          200:
+ *              description: OK
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.getPatientData = (req, res, next) => {
+
+    const { patientId } = req.params;
+
+    Patient
+        .findOne({ _id: patientId })
+        .exec()
+        .then(patient => {
+
+            const { warningScores } = patient;
+
+            WarningScore
+                .find({ _id: { $in: warningScores } })
+                .then(warnings => {
+
+                    patient.warningScores = warnings;
+
+                    res.status(200).json(patient);
+                })
+                .catch(e => res.status(500).json(e));
+        })
         .catch(e => res.status(500).json(e));
 };
