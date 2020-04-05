@@ -6,6 +6,7 @@ paths:
         - Auth
       parameters:
         - in: body
+          name: body
           require: true
           schema:
             $ref: '#definitions/authRequestModel'
@@ -24,6 +25,26 @@ paths:
           description: User authenticated
           schema:
             $ref: '#definitions/authResponseModel'
+  /api/auth/forgot-password:
+    post:
+      summary: Forgot password
+      tags:
+        - Auth
+      parameters:
+        - in: body
+          name: body
+          require: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: example@gmail.com
+      responses:
+        404:
+          description: User with that email not found
+        201:
+          description: Email sent
 
 
 definitions:
