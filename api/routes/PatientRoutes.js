@@ -6,6 +6,7 @@ require('./../../passport');
 const PatientController = require('../controllers/PatientController');
 
 Router.post('/', passport.authenticate('jwt', {session: false}), PatientController.createPatient);
+Router.post('/dummy', PatientController.createDummyPatients);
 Router.get('/:patientId', PatientController.getPatientData);
 Router.get('/', PatientController.getAllPatients);
 Router.get('/export/csv', PatientController.exportPatientsInCsv);

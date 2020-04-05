@@ -11,7 +11,8 @@ const warningScoreSchema = mongoose.Schema({
     stateOfConsciousness: { type: String, required: true },
     bodyTemperature: { type: Number, required: true },
     coughDegree: { type: Number, min: 1, max: 5, required: false },
-    score: { type: Number, required: true }
+    score: { type: Number, required: true },
+    timestamp: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('WarningScore', warningScoreSchema);

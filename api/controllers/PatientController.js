@@ -3,6 +3,8 @@ const WarningScore = require('../models/warningScore');
 const Mongoose = require('mongoose');
 const jsonExport = require('jsonexport');
 const fs = require('fs');
+const DummyData = require('../services/GetDummyData');
+const CalculateScore = require('../services/CalculateScore');
 
 /**
  * Create patient
@@ -167,4 +169,52 @@ exports.exportPatientsInCsv = (req, res, next) => {
 
         })
         .catch(e => res.status(500).json(e));
+};
+
+/**
+ * Create dummy patients
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.createDummyPatients = (req, res, next) => {
+
+    for(let users = 0; users < 5; users++) {
+
+        const patient = new Patient(DummyData.getDummyDataForPatients());
+
+        patient
+            .save()
+            .then(r => {
+
+                for(let warnings = 0; warnings < 50; warnings += 1) {
+                    let body = DummyData.getDummyDataForWarningScore();
+                    const score = CalculateScore(body);
+
+                    body = {
+                        _id: new Mongoose.Types.ObjectId(),
+                        score,
+                        ...body
+                    };
+
+                    const warningScore = new WarningScore(body);
+
+                    warningScore.save(error => {
+
+                        if(error) throw error;
+
+                        Patient
+                            .findOneAndUpdate(
+                                {_id: r._id},
+                                {$push: {warningScores: warningScore}},
+                                {returnOriginal: false, new: true, upsert: true}
+                            )
+                            .populate('WarningScore')
+                            .exec();
+
+                    })
+                }
+            })
+    }
 };
