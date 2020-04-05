@@ -53,7 +53,9 @@ exports.getDoctorById = (req, res, next) => {
 
     User
         .findOne({ _id: doctorId })
-        .then(r => res.status(200).json(r))
+        .then(r => {
+            res.status(200).json(r)
+        })
         .catch(e => res.status(500).json(e));
 };
 
@@ -101,6 +103,9 @@ exports.editDoctor = (req, res, next) => {
 
     const { doctorId } = req.params;
     const { body } = req;
+
+    if(body['password'])
+        delete body['password'];
 
     User
         .findOneAndUpdate(
