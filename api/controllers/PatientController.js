@@ -1,6 +1,8 @@
 const Patient = require('../models/patient');
 const WarningScore = require('../models/warningScore');
 const Mongoose = require('mongoose');
+const jsonExport = require('jsonexport');
+const fs = require('fs');
 
 /**
  * Create patient
@@ -109,5 +111,60 @@ exports.getAllPatients = (req, res, next) => {
         .populate('warningScores')
         .exec()
         .then(r => res.status(200).json(r))
+        .catch(e => res.status(500).json(e));
+};
+
+/**
+ * Export patients data in csv
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.exportPatientsInCsv = (req, res, next) => {
+
+    Patient
+        .find({})
+        .populate('warningScores')
+        .exec()
+        .then(patients => {
+
+            let patientsData = [];
+
+            for(let patient of patients) {
+                for(const warningScore of patient['warningScores']) {
+
+                    let filteredPatient = {};
+                    let filteredWarningScores = {};
+
+                    for(const [key, value] of Object.entries(patient.toJSON()))
+                        if(key !== 'warningScores' && key !== '_id')
+                            filteredPatient[key] = value;
+
+                    for(const [key, value] of Object.entries(warningScore.toJSON()))
+                        if(key !== '_id')
+                            filteredWarningScores[key] = value;
+
+                    patientsData = [...patientsData, {
+                        ...filteredPatient,
+                        ...filteredWarningScores
+                    }];
+                }
+            }
+
+            jsonExport(patientsData, (err, csv) => {
+
+                if(err) res.status(500).json(err);
+
+                const fileName = `${__dirname}/../../exports/${Date.now()}_export.csv`;
+                fs.writeFile(fileName, csv, (e) => {
+
+                    if(e) res.status(500).json(e);
+
+                    res.download(fileName);
+                });
+            });
+
+        })
         .catch(e => res.status(500).json(e));
 };

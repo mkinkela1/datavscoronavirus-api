@@ -1,4 +1,12 @@
 paths:
+  /api/patient/export/csv:
+    get:
+      summary: Get all patients data
+      tags:
+        - Patients
+      responses:
+        200:
+          description: Download csv
   /api/patient:
     get:
       summary: Get all patients data
