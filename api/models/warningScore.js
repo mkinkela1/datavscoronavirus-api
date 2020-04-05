@@ -8,7 +8,8 @@ const warningScoreSchema = mongoose.Schema({
     systolicPressure: { type: Number, required: true },
     heartRate: { type: Number, required: true },
     stateOfConsciousness: { type: String, required: true },
-    bodyTemperature: { type: mongoose.Decimal128, required: true }
+    bodyTemperature: { type: mongoose.Decimal128, required: true },
+    coughDegree: { type: Number, min: 1, max: 5, required: false }
 });
 
 module.exports = mongoose.model('WarningScore', warningScoreSchema);
