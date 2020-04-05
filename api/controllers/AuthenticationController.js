@@ -6,7 +6,7 @@ const secretKey = process.env.SECRET_KEY;
  * @swagger
  * /auth/login:
  *  post:
- *      summary: Authenticate user
+ *      summary: Authenticate doctor
  *      tags:
  *          - Auth
  *      parameters:
