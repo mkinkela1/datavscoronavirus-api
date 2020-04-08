@@ -158,7 +158,7 @@ exports.exportPatientsInCsv = (req, res, next) => {
 
                 if(err) res.status(500).json(err);
 
-                const fileName = `${__dirname}/../../exports/${Date.now()}_export.csv`;
+                const fileName = `${__dirname}/../../exports/export.csv`;
                 fs.writeFile(fileName, csv, (e) => {
 
                     if(e) res.status(500).json(e);
