@@ -1,5 +1,4 @@
 const Patient = require('../models/patient');
-const WarningScore = require('../models/warningScore');
 const Mongoose = require('mongoose');
 const jsonExport = require('jsonexport');
 const fs = require('fs');
@@ -38,21 +37,10 @@ exports.getPatientData = (req, res, next) => {
 
     Patient
         .findOne({ _id: patientId })
+        .populate('warningScores')
+        .populate('patientRelevantData')
         .exec()
-        .then(patient => {
-
-            const { warningScores } = patient;
-
-            WarningScore
-                .find({ _id: { $in: warningScores } })
-                .then(warnings => {
-
-                    patient.warningScores = warnings;
-
-                    res.status(200).json(patient);
-                })
-                .catch(e => res.status(500).json(e));
-        })
+        .then(r => res.status(200).json(r))
         .catch(e => res.status(500).json(e));
 };
 
@@ -109,12 +97,15 @@ exports.getAllPatients = (req, res, next) => {
     Patient
         .find({})
         .populate('warningScores')
+        .populate('patientRelevantData')
         .exec()
         .then(r => res.status(200).json(r))
         .catch(e => res.status(500).json(e));
 };
 
 /**
+ * TODO: refactor
+ *
  * Export patients data in csv
  *
  * @param req
@@ -126,6 +117,7 @@ exports.exportPatientsInCsv = (req, res, next) => {
     Patient
         .find({})
         .populate('warningScores')
+        .populate('patientRelevantData')
         .exec()
         .then(patients => {
 
