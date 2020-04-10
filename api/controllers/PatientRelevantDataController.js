@@ -53,7 +53,7 @@ exports.getAllPatientRelevantData = (req, res, next) => {
         .find({ _id: patientId })
         .populate('PatientRelevantData')
         .exec()
-        .then(r => res.status(200).json(r))
+        .then(r => res.status(200).json(r.patientRelevantData))
         .catch(e => res.status(500).json(e));
 };
 
