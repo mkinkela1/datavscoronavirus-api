@@ -3,7 +3,6 @@ const WarningScore = require('../models/warningScore');
 const Mongoose = require('mongoose');
 const jsonExport = require('jsonexport');
 const fs = require('fs');
-const CalculateScore = require('../services/CalculateScore');
 
 /**
  * Create patient

@@ -43,10 +43,10 @@ module.exports = function({
     else if(bodyTemperature >= 35.1 && bodyTemperature <= 36.0) score += 1;
     else if(bodyTemperature >= 38.1 && bodyTemperature <= 39.0) score += 1;
 
-    if(mark3 === true && score < 7) return 2;
+    if(score < 7 && !mark3) return 2;
     if(score === 0) return 0;
     else if(score >= 1 && score <= 4) return 1;
     else if(score >= 5 && score <= 6) return 2;
-    else if(score === 7) return 3;
+    else if(score >= 7 && !mark3) return 3;
     else return 4;
-}
+};
