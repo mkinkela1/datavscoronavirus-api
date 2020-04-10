@@ -1,4 +1,4 @@
-const User = require('../models/doctor');
+const Doctor = require('../models/doctor');
 const Mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
@@ -13,31 +13,43 @@ exports.createDoctor = (req, res, next) => {
 
     const { firstName, lastName, email, password, cityOrRegion, hospitalName, country } = req.body;
 
-    bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(password, salt, (e, hash) => {
+    Doctor
+        .findOne({ email })
+        .exec()
+        .then(r => {
 
-            if(e)
-                return res.status(500).json(e);
+            if(r && r._id)
+                res.status(409).json('Already exists');
             else {
 
-                const user = new User({
-                    _id: new Mongoose.Types.ObjectId(),
-                    firstName,
-                    lastName,
-                    email,
-                    password: hash,
-                    cityOrRegion,
-                    hospitalName,
-                    country
-                });
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(password, salt, (e, hash) => {
 
-                user
-                    .save()
-                    .then(r => res.status(201).json(r))
-                    .catch(e => res.status(500).json(e))
+                        if(e)
+                            return res.status(500).json(e);
+                        else {
+
+                            const doctor = new Doctor({
+                                _id: new Mongoose.Types.ObjectId(),
+                                firstName,
+                                lastName,
+                                email,
+                                password: hash,
+                                cityOrRegion,
+                                hospitalName,
+                                country
+                            });
+
+                            doctor
+                                .save()
+                                .then(r => res.status(201).json(r))
+                                .catch(e => res.status(500).json(e))
+                        }
+                    })
+                });
             }
         })
-    });
+        .catch(e => res.status(500).json(e));
 };
 
 /**
@@ -51,7 +63,7 @@ exports.getDoctorById = (req, res, next) => {
 
     const { doctorId } = req.params;
 
-    User
+    Doctor
         .findOne({ _id: doctorId })
         .then(r => {
             res.status(200).json(r)
@@ -68,7 +80,7 @@ exports.getDoctorById = (req, res, next) => {
  */
 exports.getDoctors = (req, res, next) => {
 
-    User
+    Doctor
         .find({})
         .then(r => res.status(200).json(r))
         .catch(e => res.status(500).json(e));
@@ -85,7 +97,7 @@ exports.deleteDoctor = (req, res, next) => {
 
     const { doctorId } = req.params;
 
-    User
+    Doctor
         .findOneAndDelete({ _id: doctorId })
         .exec()
         .then(() => res.status(204))
@@ -107,7 +119,7 @@ exports.editDoctor = (req, res, next) => {
     if(body['password'])
         delete body['password'];
 
-    User
+    Doctor
         .findOneAndUpdate(
             { _id: doctorId },
             body,
