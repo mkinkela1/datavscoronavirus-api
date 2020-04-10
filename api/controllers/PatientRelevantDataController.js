@@ -12,7 +12,12 @@ const Mongoose = require('mongoose');
 exports.createPatientRelevantData = (req, res, next) => {
 
     const { patientId } = req.params;
-    const { body } = req;
+    let { body } = req;
+
+    body = {
+        _id: new Mongoose.Types.ObjectId(),
+        ...body
+    };
 
     const relevantData = new PatientRelevantData(body);
 
@@ -91,5 +96,22 @@ exports.updatePatientRelevantData = (req, res, next) => {
         )
         .exec()
         .then(r => res.status(200).json(r))
+        .catch(e => res.status(500).json(e));
+};
+
+/**
+ * Delete patient relevant data
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.deletePatientRelevantData = (req, res, next) => {
+
+    const { patientRelevantDataId } = req.params;
+
+    PatientRelevantData
+        .deleteOne({ _id: patientRelevantDataId })
+        .then(() => res.status(204))
         .catch(e => res.status(500).json(e));
 };
