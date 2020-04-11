@@ -49,11 +49,13 @@ const doctor = require('./api/routes/DoctorRoutes');
 const auth = require('./api/routes/AuthRoutes');
 const patient = require('./api/routes/PatientRoutes');
 const warningScore = require('./api/routes/WarningScoreRoutes');
+const patientRelevantData = require('./api/routes/PatientRelevantDataRoutes');
 
 app.use('/api/doctor', doctor);
 app.use('/api/auth', auth);
 app.use('/api/patient', patient);
 app.use('/api/warning-score', warningScore);
+app.use('/api/patient-relevant-data', patientRelevantData);
 
 app.use((req,res,next) => {
     const error = new Error('Not found');
