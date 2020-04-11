@@ -94,6 +94,9 @@ definitions:
       anyAdditionalO2:
         type: boolean
         example: true
+      onRespirator:
+        type: boolean
+        example: true
       systolicPressure:
         type: integer
         example: 30
@@ -107,11 +110,6 @@ definitions:
         type: integer
         format: float
         example: 39.1
-      coughDegree:
-        type: integer
-        minimum: 1
-        maximum: 5
-        example: 4
   warningScoreResponseModel:
     type: object
     properties:
@@ -130,6 +128,9 @@ definitions:
       anyAdditionalO2:
         type: boolean
         example: true
+      onRespirator:
+        type: boolean
+        example: true
       systolicPressure:
         type: integer
         example: 30
@@ -143,8 +144,9 @@ definitions:
         type: integer
         format: float
         example: 39.1
-      coughDegree:
+      score:
         type: integer
-        minimum: 1
-        maximum: 5
-        example: 4
+        example: 3
+      timestamp:
+        type: integer
+        example: 1586619838472
