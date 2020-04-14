@@ -36,7 +36,7 @@ exports.addWarningScore = (req, res, next) => {
                 { $push: { warningScores: warningScore } },
                 { returnOriginal: false, new: true, upsert: true }
             )
-            .populate('WarningScore')
+            .populate('warningScores')
             .exec()
             .then(r => res.status(201).json(r))
             .catch(e => res.status(500).json(e));
@@ -55,7 +55,7 @@ exports.getWaringScoreById = (req, res, next) => {
     const { warningScoreId } = req.params;
 
     WarningScore
-        .find({ _id: warningScoreId })
+        .findOne({ _id: warningScoreId })
         .exec()
         .then(r => res.status(200).json(r))
         .catch(e => res.status(500).json(e));
@@ -75,7 +75,7 @@ exports.deleteWarningScore = (req, res, next) => {
     WarningScore
         .findOneAndDelete({ _id: warningScoreId })
         .exec()
-        .then(() => res.status(204))
+        .then(() => res.status(204).json())
         .catch(e => res.status(500).json(e));
 };
 
@@ -89,7 +89,15 @@ exports.deleteWarningScore = (req, res, next) => {
 exports.updateWarningScore = (req, res, next) => {
 
     const { warningScoreId } = req.params;
-    const { body } = req;
+    let { body } = req;
+
+    const score = CalculateScore(body);
+
+    body = {
+        ...body,
+        score,
+        timestamp: Date.now()
+    };
 
     WarningScore
         .findOneAndUpdate(
@@ -98,5 +106,24 @@ exports.updateWarningScore = (req, res, next) => {
             { returnOriginal: false, new: true, upsert: true }
         )
         .then(r => res.status(200).json(r))
+        .catch(e => res.status(500).json(e));
+};
+
+/**
+ * Get patient's warning scores
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.getPatientWarningScore = (req, res, next) => {
+
+    const { patientId } = req.params;
+
+    Patient
+        .find({ _id: patientId })
+        .populate('warningScores')
+        .exec()
+        .then(r => res.status(200).json(r.warningScores))
         .catch(e => res.status(500).json(e));
 };

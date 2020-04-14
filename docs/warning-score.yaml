@@ -20,6 +20,26 @@ paths:
       responses:
         201:
           description: Warning score added
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get all patient's warning scores
+      tags:
+        - Warning score
+      parameters:
+        - in: path
+          name: patientId
+          require: true
+          description: Patient ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: Warning scores
+          schema:
+            type: array
+            items:
+              $ref: '#definitions/warningScoreResponseModel'
   /api/warning-score/{warningScoreId}:
     get:
       security:
