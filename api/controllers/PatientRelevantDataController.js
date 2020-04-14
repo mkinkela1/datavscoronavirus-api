@@ -31,7 +31,7 @@ exports.createPatientRelevantData = (req, res, next) => {
                 { $push: { patientRelevantData: relevantData } },
                 { returnOriginal: false, new: true, upsert: true }
             )
-            .populate('PatientRelevantData')
+            .populate('patientRelevantData')
             .exec()
             .then(r => res.status(201).json(r))
             .catch(e => res.status(500).json(e));
@@ -51,7 +51,7 @@ exports.getAllPatientRelevantData = (req, res, next) => {
 
     Patient
         .find({ _id: patientId })
-        .populate('PatientRelevantData')
+        .populate('patientRelevantData')
         .exec()
         .then(r => res.status(200).json(r.patientRelevantData))
         .catch(e => res.status(500).json(e));
@@ -112,6 +112,6 @@ exports.deletePatientRelevantData = (req, res, next) => {
 
     PatientRelevantData
         .deleteOne({ _id: patientRelevantDataId })
-        .then(() => res.status(204))
+        .then(() => res.status(204).json())
         .catch(e => res.status(500).json(e));
 };

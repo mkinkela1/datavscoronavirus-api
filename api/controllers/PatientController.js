@@ -20,7 +20,7 @@ exports.createPatient = (req, res, next) => {
 
     patient
         .save()
-        .then(r => res.status(200).json(r))
+        .then(r => res.status(201).json(r))
         .catch(e => res.status(500).json(e));
 };
 
@@ -58,7 +58,7 @@ exports.deletePatient = (req, res, next) => {
     Patient
         .findOneAndDelete({ _id: patientId })
         .exec()
-        .then(() => res.status(204))
+        .then(() => res.status(204).json())
         .catch(e => res.status(500).json(e));
 };
 
