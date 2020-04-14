@@ -3,7 +3,7 @@ const Router = Express.Router({ mergeParams: true });
 
 const PatientRelevantDataController = require('./../controllers/PatientRelevantDataController');
 
-Router.post('/', PatientRelevantDataController.createPatientRelevantData);
+Router.post('/patient/:patientId', PatientRelevantDataController.createPatientRelevantData);
 Router.get('/patient/:patientId', PatientRelevantDataController.getAllPatientRelevantData);
 Router.get('/:patientRelevantDataId', PatientRelevantDataController.getPatientRelevantDataById);
 Router.delete('/:patientRelevantDataId', PatientRelevantDataController.deletePatientRelevantData);

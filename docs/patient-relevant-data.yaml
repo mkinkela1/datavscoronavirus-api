@@ -1,12 +1,18 @@
 paths:
-  /api/patient-relevant-data:
-    post:
+  /api/patient-relevant-data/patient/{patientId}:
+    get:
       security:
         - bearerAuth: []
-      summary: Create patient relevant data by id
+      summary: Create all patient relevant data by id
       tags:
         - Patient relevant data
       parameters:
+        - in: path
+          name: patientId
+          require: true
+          description: Patient ID
+          schema:
+            type: string
         - in: body
           name: body
           require: true
@@ -17,11 +23,10 @@ paths:
           description: Updated patient relevant data
           schema:
             $ref: '#definitions/patientRelevantDataResponseModel'
-  /api/patient-relevant-data/patient/{patientId}:
-    get:
+    post:
       security:
         - bearerAuth: []
-      summary: Create all patient relevant data by id
+      summary: Create patient relevant data by id
       tags:
         - Patient relevant data
       parameters:
