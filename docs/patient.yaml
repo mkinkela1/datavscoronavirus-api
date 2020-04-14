@@ -16,7 +16,7 @@ paths:
         200:
           description: Patients data
           schema:
-            $ref: '#definitions/patientResponseFullModel'
+            $ref: '#definitions/patientResponseModel'
     post:
       security:
         - bearerAuth: []

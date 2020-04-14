@@ -100,7 +100,7 @@ exports.deleteDoctor = (req, res, next) => {
     Doctor
         .findOneAndDelete({ _id: doctorId })
         .exec()
-        .then(() => res.status(204))
+        .then(() => res.status(204).json())
         .catch(e => res.status(500).json(e));
 };
 

@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "test": "mocha --timeout 5000 './test/*.js'",
     "fill-data": "node ./api/services/CreateDummyData.js createDummyPatients"
   },
   "repository": {
@@ -42,6 +43,9 @@
     "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^7.1.1",
     "nodemon": "^2.0.2"
   }
 }

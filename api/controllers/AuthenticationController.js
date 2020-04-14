@@ -26,7 +26,7 @@ exports.auth = (req, res, next) => {
 
         req.login(user, {session: false}, (err) => {
             if (err) {
-                res.status(500).send(err);
+                res.status(500).json(err);
             }
 
             const token = jwt.sign(user.toJSON(), secretKey, {
