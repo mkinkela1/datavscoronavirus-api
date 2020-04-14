@@ -7,7 +7,7 @@ const patientRelevantDataSchema = mongoose.Schema({
     haveYouBeenInContactWithPeopleWhoHaveTheCoronaVirusInTheLast14Days: { type: Boolean, default: null },
     haveYouEverBeenToAHealthCareFacilityWhereTheDiseaseHasBeenDiagnosedWithANewCoronavirus: { type: Boolean, default: null },
     didYouGoForAExaminationSomewhere: { type: Boolean, default: null },
-    symptomsProblems: [String],
+    symptoms: [String],
     symptomsDuration: { type: Number, required: false },
     highTemperature: { type: mongoose.Schema.Types.Mixed, default: null },
     shaking: { type: Boolean, default: null },

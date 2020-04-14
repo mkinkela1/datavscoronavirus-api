@@ -50,7 +50,7 @@ exports.getAllPatientRelevantData = (req, res, next) => {
     const { patientId } = req.params;
 
     Patient
-        .find({ _id: patientId })
+        .findOne({ _id: patientId })
         .populate('patientRelevantData')
         .exec()
         .then(r => res.status(200).json(r.patientRelevantData))

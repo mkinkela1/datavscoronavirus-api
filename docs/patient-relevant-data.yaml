@@ -124,12 +124,12 @@ definitions:
       didYouGoForAExaminationSomewhere:
         type: boolean
         example: true
-      currentSimptoms:
+      symptoms:
         type: array
         items:
           type: string
           example: headache
-      problemsDuration:
+      symptomsDuration:
         type: integer
         example: 5
       highTemperature:
@@ -255,12 +255,12 @@ definitions:
       didYouGoForAExaminationSomewhere:
         type: boolean
         example: true
-      currentSimptoms:
+      symptoms:
         type: array
         items:
           type: string
           example: headache
-      problemsDuration:
+      symptomsDuration:
         type: integer
         example: 5
       highTemperature:
