@@ -1,0 +1,118 @@
+paths:
+  /api/hospital:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get all hospitals
+      tags:
+        - Hospitals
+      responses:
+        200:
+          description: Array of hospitals
+          schema:
+            type: array
+            items:
+              $ref: '#definitions/hospitalResponseModel'
+    post:
+      security:
+        - bearerAuth: []
+      summary: Create hospital
+      tags:
+        - Hospitals
+      parameters:
+        - in: body
+          require: true
+          schema:
+            $ref: '#definitions/hospitalRequestModel'
+      responses:
+        201:
+          description: Hospital created
+          schema:
+            $ref: '#definitions/hospitalResponseModel'
+  /api/hospital/{hospitalId}:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get hospital by id
+      tags:
+        - Hospitals
+      parameters:
+        - in: path
+          name: hospitalId
+          require: true
+          description: Hospital ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: Hospital object
+          schema:
+            $ref: '#definitions/hospitalResponseModel'
+    put:
+      security:
+        - bearerAuth: []
+      summary: Update hospital
+      tags:
+        - Hospitals
+      parameters:
+        - in: path
+          name: hospitalId
+          require: true
+          description: Hospital ID
+          schema:
+            type: string
+        - in: body
+          require: true
+          schema:
+            $ref: '#definitions/hospitalRequestModel'
+      responses:
+        200:
+          description: Hospital object
+          schema:
+            $ref: '#definitions/hospitalResponseModel'
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete hospital
+      tags:
+        - Hospitals
+      parameters:
+        - in: path
+          name: hospitalId
+          require: true
+          description: Hospital ID
+          schema:
+            type: string
+      responses:
+        204:
+          description: No content
+
+definitions:
+  hospitalRequestModel:
+    type: object
+    properties:
+      name:
+        type: string
+        example: KBC Rebro
+      address:
+        type: string
+        example: Kišpatićeva ul. 12, 10000, Zagreb
+      numberOfBeds:
+        type: integer
+        example: 256
+  hospitalResponseModel:
+    type: object
+    properties:
+      _id:
+        type: string
+        example: 5e893473bf0d866cf54ea713
+      name:
+        type: string
+        example: KBC Rebro
+      address:
+        type: string
+        example: Kišpatićeva ul. 12, 10000, Zagreb
+      numberOfBeds:
+        type: integer
+        example: 256
+
