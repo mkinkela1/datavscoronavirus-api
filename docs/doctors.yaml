@@ -107,12 +107,19 @@ definitions:
       cityOrRegion:
         type: string
         example: Zagreb
-      hospitalName:
-        type: string
-        example: KBC Rebro
       country:
         type: string
         example: Croatia
+      refreshToken:
+        type: string
+        example: fdb8fdbecf1d03ce5e6125c067733c0d51de209c
+      hospital:
+        type: string
+        example: 5e893473bf0d866cf54ea713
+      role:
+        type: string
+        example: doctor
+        enum: [superAdmin, hospitalAdmin, doctor]
   doctorResponseModel:
     type: object
     properties:
@@ -134,9 +141,16 @@ definitions:
       cityOrRegion:
         type: string
         example: Zagreb
-      hospitalName:
-        type: string
-        example: KBC Rebro
       country:
         type: string
         example: Croatia
+      refreshToken:
+        type: string
+        example: fdb8fdbecf1d03ce5e6125c067733c0d51de209c
+      hospital:
+        type: string
+        example: 5e893473bf0d866cf54ea713
+      role:
+        type: string
+        example: doctor
+        enum: [superAdmin, hospitalAdmin, doctor]
