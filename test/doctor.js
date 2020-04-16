@@ -189,5 +189,5 @@ describe('Doctor test', () => {
                 done();
             });
 
-    })
+    });
 });
