@@ -2,8 +2,22 @@ const Mongoose = require('mongoose');
 
 const Patient = require('../models/patient');
 const WarningScore = require('../models/warningScore');
+const PatientRelevantData = require('../models/patientRelevantData');
 const DummyData = require('./GetDummyData');
 const CalculateScore = require('./CalculateScore');
+
+require('dotenv').config();
+const mongoDbString = process.env.DATABASE_URL;
+
+Mongoose.connect(
+    mongoDbString,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+        useCreateIndex: true
+    }
+);
 
 exports.createDummyPatients = () => {
 
@@ -11,38 +25,30 @@ exports.createDummyPatients = () => {
 
         const patient = new Patient(DummyData.getDummyDataForPatients());
 
-        patient
-            .save()
-            .then(r => {
+        for(let warnings = 0; warnings < 50; warnings++) {
+            let body = DummyData.getDummyDataForWarningScore();
+            const score = CalculateScore(body);
 
-                for(let warnings = 0; warnings < 50; warnings += 1) {
-                    let body = DummyData.getDummyDataForWarningScore();
-                    const score = CalculateScore(body);
+            body = {
+                score,
+                ...body
+            };
 
-                    body = {
-                        _id: new Mongoose.Types.ObjectId(),
-                        score,
-                        ...body
-                    };
+            const warningScore = new WarningScore(body);
+            warningScore.save()
+            patient.warningScores.push(body._id);
+        }
 
-                    const warningScore = new WarningScore(body);
+        for(let patientRelevantData = 0; patientRelevantData < 50; patientRelevantData++) {
 
-                    warningScore.save(error => {
+            let body = DummyData.getDummyDataForPatientRelevantData();
 
-                        if(error) throw error;
+            const patientRelevantData = new PatientRelevantData(body);
+            patientRelevantData.save();
+            patient.patientRelevantData.push(body._id);
+        }
 
-                        Patient
-                            .findOneAndUpdate(
-                                {_id: r._id},
-                                {$push: {warningScores: warningScore}},
-                                {returnOriginal: false, new: true, upsert: true}
-                            )
-                            .populate('WarningScore')
-                            .exec();
-
-                    })
-                }
-            })
+        patient.save();
     }
 };
 

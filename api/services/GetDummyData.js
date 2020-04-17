@@ -12,13 +12,51 @@ exports.getDummyDataForPatients = () => {
         sex: chance.gender(),
         address: chance.address(),
         contact: chance.phone(),
+        drugAllergy: chance.bool(),
+        smoking: chance.bool(),
+        coronaryHeartDisease: chance.bool(),
+        heartArrhythmia: chance.bool(),
+        heartFailure: chance.bool(),
+        lungDisease: chance.bool(),
+        asthma: chance.bool(),
+        chronicKidneyDisease: chance.bool(),
+        diabetes: chance.bool(),
+        heartStroke: chance.bool(),
+        malignantDisease: chance.bool(),
+        chronicLiverDisease: chance.bool(),
+        inflamatoryBowelDisease: chance.bool(),
+        reuma: chance.bool(),
+        hiv: chance.bool(),
+        medications: [],
+        operations: [],
+    };
+};
+
+exports.getDummyDataForWarningScore = () => {
+    return {
+        _id: new Mongoose.Types.ObjectId(),
+        years: chance.age(),
+        numberOfRespirations: chance.natural({ min: 5, max: 30 }),
+        oxygenSaturation: chance.natural({ min: 85, max: 100 }),
+        anyAdditionalO2: chance.bool(),
+        onRespirator: chance.bool(),
+        systolicPressure: chance.natural({ min: 80, max: 230 }),
+        heartRate: chance.natural({ min: 30, max: 150 }),
+        stateOfConsciousness: chance.natural() % 2 === 0 ? 'Nothing' : 'Confused',
+        bodyTemperature: chance.floating({ min: 33, max: 42 })
+    }
+};
+
+exports.getDummyDataForPatientRelevantData = () => {
+    return {
+        _id: new Mongoose.Types.ObjectId(),
         travelToRiskCountriesInTheLast14Days: chance.bool() ? chance.country({ full: true }) : 'false',
         contactInTheLast14DaysWithAPersonWhoHasSymptoms: chance.bool(),
         haveYouBeenInContactWithPeopleWhoHaveTheCoronaVirusInTheLast14Days: chance.bool(),
         haveYouEverBeenToAHealthCareFacilityWhereTheDiseaseHasBeenDiagnosedWithANewCoronavirus: chance.bool(),
         didYouGoForAExaminationSomewhere: chance.bool(),
-        currentProblems: [],
-        problemsDuration: chance.integer({ min: 1, max: 5 }),
+        symptoms: [],
+        symptomsDuration: chance.integer({ min: 1, max: 5 }),
         highTemperature: chance.floating({ min: 30, max: 40 }),
         shaking: chance.bool(),
         lossOfAppetite: chance.bool(),
@@ -50,38 +88,8 @@ exports.getDummyDataForPatients = () => {
         rash: chance.bool(),
         enlargedLymphNodes: chance.bool(),
         neuroInterferences: chance.bool(),
-        drugAllergy: chance.bool(),
-        smoking: chance.bool(),
         increasedBloodPressure: chance.bool(),
-        coronaryHeartDisease: chance.bool(),
-        heartArrhythmia: chance.bool(),
-        heartFailure: chance.bool(),
-        lungDisease: chance.bool(),
-        asthma: chance.bool(),
-        chronicKidneyDisease: chance.bool(),
-        diabetes: chance.bool(),
-        heartStroke: chance.bool(),
-        malignantDisease: chance.bool(),
-        chronicLiverDisease: chance.bool(),
-        inflamatoryBowelDisease: chance.bool(),
-        reuma: chance.bool(),
-        hiv: chance.bool(),
-        medications: [],
-        operations: [],
+        positiveToCoronavirus: chance.bool(),
+        curedOfCoronavirus: chance.bool()
     };
-};
-
-exports.getDummyDataForWarningScore = () => {
-    return {
-        _id: new Mongoose.Types.ObjectId(),
-        years: chance.age(),
-        numberOfRespirations: chance.natural({ min: 5, max: 30 }),
-        oxygenSaturation: chance.natural({ min: 85, max: 100 }),
-        anyAdditionalO2: chance.bool(),
-        systolicPressure: chance.natural({ min: 80, max: 230 }),
-        heartRate: chance.natural({ min: 30, max: 150 }),
-        stateOfConsciousness: chance.natural() % 2 === 0 ? 'Nothing' : 'Confused',
-        bodyTemperature: chance.floating({ min: 33, max: 42 }),
-        coughDegree: chance.natural({ min: 1, max: 5 })
-    }
 };
