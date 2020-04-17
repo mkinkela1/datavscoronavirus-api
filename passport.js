@@ -7,7 +7,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy   = passportJWT.Strategy;
 
 const DoctorModel = require('./api/models/doctor');
-const secretKey = process.env.SECRET_KEY;
+const { TOKEN_SECRET_KEY } = process.env;
 
 const bcrypt = require('bcryptjs');
 
@@ -33,6 +33,7 @@ passport.use('login', new LocalStrategy({
                 });
             })
             .catch(err => {
+                console.log(err);
                 return cb(err);
             });
     }
@@ -40,7 +41,7 @@ passport.use('login', new LocalStrategy({
 
 passport.use(new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey   : secretKey
+        secretOrKey   : TOKEN_SECRET_KEY
     },
     function (jwtPayload, cb) {
 

@@ -5,5 +5,6 @@ const AuthenticationController = require('./../controllers/AuthenticationControl
 
 Router.post('/login', AuthenticationController.auth);
 Router.post('/forgot-password', AuthenticationController.forgotPassword);
+Router.post('/refresh-token', AuthenticationController.refreshToken);
 
 module.exports = Router;

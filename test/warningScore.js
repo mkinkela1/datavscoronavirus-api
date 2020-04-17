@@ -31,7 +31,6 @@ describe('warning score test', () => {
                 firstName: "Test",
                 lastName: "Account",
                 cityOrRegion: "Zagreb",
-                hospitalName: "KBC Rebro",
                 country: "Croatia"
             })
             .end((err, res) => {
@@ -49,7 +48,6 @@ describe('warning score test', () => {
                     firstName: 'string',
                     lastName: 'string',
                     cityOrRegion: 'string',
-                    hospitalName: 'string',
                     country: 'string'
                 };
 
@@ -78,9 +76,9 @@ describe('warning score test', () => {
                 res.should.have.status(201);
 
                 res.body.should.have.property('token');
-                res.body.token.should.be.a('string');
 
-                token = res.body.token;
+                token = res.body.token.token;
+                refreshToken = res.body.token.refreshToken;
 
                 done();
             });

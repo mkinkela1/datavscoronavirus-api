@@ -1,10 +1,13 @@
 const jwt      = require('jsonwebtoken');
 const passport = require('passport');
 
-const secretKey = process.env.SECRET_KEY;
+const {TOKEN_SECRET_KEY, TOKEN_LIFE, REFRESH_TOKEN_SECRET_KEY, REFRESH_TOKEN_LIFE} = process.env;
 
 const Doctor = require('./../models/doctor');
 const Mailer = require('./../services/ForgotPassword');
+
+const { RefreshToken } = require("../services/refreshToken");
+const RefreshTokenService = new RefreshToken();
 
 /**
  * User authentication
@@ -20,7 +23,8 @@ exports.auth = (req, res, next) => {
         if (err || !user) {
             return res.status(400).json({
                 message: info ? info.message : 'Login failed',
-                user   : user
+                user   : user,
+                err
             });
         }
 
@@ -29,11 +33,18 @@ exports.auth = (req, res, next) => {
                 res.status(500).json(err);
             }
 
-            const token = jwt.sign(user.toJSON(), secretKey, {
-                expiresIn: 604800
-            });
+            const token = jwt.sign(user.toJSON(), TOKEN_SECRET_KEY, { expiresIn: TOKEN_LIFE });
+            const refreshToken = jwt.sign(user.toJSON(), REFRESH_TOKEN_SECRET_KEY, { expiresIn: REFRESH_TOKEN_LIFE });
 
-            return res.status(201).json({user, token});
+            RefreshTokenService.addToken(refreshToken, user);
+
+            return res.status(201).json({
+                user,
+                token: {
+                    token,
+                    refreshToken
+                }
+            });
         });
     })(req, res);
 };
@@ -73,3 +84,39 @@ exports.forgotPassword = (req, res, next) => {
  * @param next
  */
 exports.resetPassword = (req, res, next) => {};
+
+/**
+ * Refresh tokens
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.refreshToken = (req, res, next) => {
+
+    let { refreshToken } = req.body;
+
+    const user = RefreshTokenService.validateToken(refreshToken);
+
+    if(user) {
+
+        RefreshTokenService.removeToken(refreshToken);
+
+        const token = jwt.sign(user.toJSON(), TOKEN_SECRET_KEY, { expiresIn: TOKEN_LIFE });
+        refreshToken = jwt.sign(user.toJSON(), REFRESH_TOKEN_SECRET_KEY, { expiresIn: REFRESH_TOKEN_LIFE });
+
+        RefreshTokenService.addToken(refreshToken, user);
+
+        return res.status(201).json({
+            user,
+            token: {
+                token,
+                refreshToken
+            }
+        });
+    } else {
+
+        return res.status(401).json('Refresh token not valid');
+    }
+
+};

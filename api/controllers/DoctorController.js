@@ -11,7 +11,7 @@ const bcrypt = require('bcryptjs');
  */
 exports.createDoctor = (req, res, next) => {
 
-    const { firstName, lastName, email, password, cityOrRegion, hospitalName, country } = req.body;
+    const { firstName, lastName, email, password, cityOrRegion, hospital, country } = req.body;
 
     Doctor
         .findOne({ email })
@@ -36,7 +36,7 @@ exports.createDoctor = (req, res, next) => {
                                 email,
                                 password: hash,
                                 cityOrRegion,
-                                hospitalName,
+                                hospital,
                                 country
                             });
 

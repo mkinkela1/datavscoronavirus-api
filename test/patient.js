@@ -30,7 +30,6 @@ describe('Patient test', () => {
                 firstName: "Test",
                 lastName: "Account",
                 cityOrRegion: "Zagreb",
-                hospitalName: "KBC Rebro",
                 country: "Croatia"
             })
             .end((err, res) => {
@@ -48,7 +47,6 @@ describe('Patient test', () => {
                     firstName: 'string',
                     lastName: 'string',
                     cityOrRegion: 'string',
-                    hospitalName: 'string',
                     country: 'string'
                 };
 
@@ -77,9 +75,9 @@ describe('Patient test', () => {
                 res.should.have.status(201);
 
                 res.body.should.have.property('token');
-                res.body.token.should.be.a('string');
 
-                token = res.body.token;
+                token = res.body.token.token;
+                refreshToken = res.body.token.refreshToken;
 
                 done();
             });

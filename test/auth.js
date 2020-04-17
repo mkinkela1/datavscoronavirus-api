@@ -6,14 +6,15 @@ const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-describe('Doctor test', () => {
+describe('Auth test', () => {
 
-    let doctorId, token;
+    let doctorId, token, refreshToken;
 
     before(done => {
 
         doctorId = null;
         token = null;
+        refreshToken = null;
 
         done();
     });
@@ -82,37 +83,6 @@ describe('Doctor test', () => {
             });
     });
 
-    it('Get doctor by id', done => {
-
-        chai
-            .request('http://localhost:8000')
-            .get(`/api/doctor/${doctorId}`)
-            .set('Authorization', `Bearer ${token}`)
-            .end((err, res) => {
-
-                expect(err).to.be.null;
-                res.should.have.status(200);
-
-                const testResponse = {
-                    _id: 'string',
-                    email: 'string',
-                    password: 'string',
-                    firstName: 'string',
-                    lastName: 'string',
-                    cityOrRegion: 'string',
-                    country: 'string'
-                };
-
-                for( const [key, type] of Object.entries(testResponse) ) {
-
-                    res.body.should.have.property(key);
-                    res.body[key].should.be.a(type);
-                }
-
-                done();
-            });
-    });
-
     it('Get all doctors', done => {
 
         chai
@@ -147,25 +117,57 @@ describe('Doctor test', () => {
             });
     });
 
-    it('Update doctor', done => {
+    it('Refresh token', done => {
 
         chai
             .request('http://localhost:8000')
-            .put(`/api/doctor/${doctorId}`)
-            .set('Authorization', `Bearer ${token}`)
+            .post(`/api/auth/refresh-token`)
             .send({
-                firstName: "Pero",
-                lastName: "Peric",
+                refreshToken: refreshToken
             })
             .end((err, res) => {
 
-                res.body.should.have.property('firstName');
-                res.body['firstName'].should.be.a('string');
-                expect(res.body['firstName']).to.equal('Pero');
+                expect(err).to.be.null;
+                res.should.have.status(201);
 
-                res.body.should.have.property('lastName');
-                res.body['lastName'].should.be.a('string');
-                expect(res.body['lastName']).to.equal('Peric');
+                res.body.should.have.property('token');
+
+                token = res.body.token.token;
+                refreshToken = res.body.token.refreshToken;
+
+                done();
+            });
+    });
+
+    it('Get all doctors', done => {
+
+        chai
+            .request('http://localhost:8000')
+            .get(`/api/doctor`)
+            .set('Authorization', `Bearer ${token}`)
+            .end((err, res) => {
+
+                expect(err).to.be.null;
+                res.should.have.status(200);
+
+                for(const [_, doctor] of Object.entries(res.body)) {
+
+                    const testResponse = {
+                        _id: 'string',
+                        email: 'string',
+                        password: 'string',
+                        firstName: 'string',
+                        lastName: 'string',
+                        cityOrRegion: 'string',
+                        country: 'string'
+                    };
+
+                    for( const [key, type] of Object.entries(testResponse) ) {
+
+                        doctor.should.have.property(key);
+                        doctor[key].should.be.a(type);
+                    }
+                }
 
                 done();
             });
