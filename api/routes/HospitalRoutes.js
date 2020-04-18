@@ -9,6 +9,6 @@ Router.post('/', passport.authenticate('jwt', {session: false}), HospitalControl
 Router.get('/', passport.authenticate('jwt', {session: false}), HospitalController.getAllHospitals);
 Router.get('/:hospitalId', passport.authenticate('jwt', {session: false}), HospitalController.getHospitalById);
 Router.put('/:doctorId', passport.authenticate('jwt', {session: false}), HospitalController.updateHospital);
-Router.delete('/:doctorId', passport.authenticate('jwt', {session: false}), HospitalController.deleteHospital);
+Router.delete('/:hospitalId', passport.authenticate('jwt', {session: false}), HospitalController.deleteHospital);
 
 module.exports = Router;
