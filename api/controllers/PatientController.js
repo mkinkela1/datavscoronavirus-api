@@ -124,24 +124,15 @@ exports.exportPatientsInCsv = (req, res, next) => {
             let patientsData = [];
 
             for(let patient of patients) {
-                for(const warningScore of patient['warningScores']) {
 
-                    let filteredPatient = {};
-                    let filteredWarningScores = {};
+                let filteredPatient = {};
 
-                    for(const [key, value] of Object.entries(patient.toJSON()))
-                        if(key !== 'warningScores' && key !== '_id')
-                            filteredPatient[key] = value;
+                for(const [key, value] of Object.entries(patient.toJSON()))
+                    if(!['firstName', 'lastName', 'address', 'contact'].includes(key))
+                        filteredPatient[key] = value;
 
-                    for(const [key, value] of Object.entries(warningScore.toJSON()))
-                        if(key !== '_id')
-                            filteredWarningScores[key] = value;
 
-                    patientsData = [...patientsData, {
-                        ...filteredPatient,
-                        ...filteredWarningScores
-                    }];
-                }
+                patientsData = [...patientsData, filteredPatient];
             }
 
             jsonExport(patientsData, (err, csv) => {
