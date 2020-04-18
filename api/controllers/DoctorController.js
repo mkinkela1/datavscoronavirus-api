@@ -1,6 +1,7 @@
 const Doctor = require('../models/doctor');
 const Mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const Mailer = require('../services/AccountCredentials');
 
 /**
  * Create a new doctor
@@ -42,7 +43,12 @@ exports.createDoctor = (req, res, next) => {
 
                             doctor
                                 .save()
-                                .then(r => res.status(201).json(r))
+                                .then(r => {
+
+                                    Mailer
+                                        .sendEmail(doctor, password)
+                                        .then(() => res.status(201).json(r));
+                                })
                                 .catch(e => res.status(500).json(e))
                         }
                     })
