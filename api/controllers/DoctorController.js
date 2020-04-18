@@ -71,6 +71,7 @@ exports.getDoctorById = (req, res, next) => {
 
     Doctor
         .findOne({ _id: doctorId })
+        .populate('hospital')
         .then(r => {
             res.status(200).json(r)
         })
@@ -88,6 +89,7 @@ exports.getDoctors = (req, res, next) => {
 
     Doctor
         .find({})
+        .populate('hospital')
         .then(r => res.status(200).json(r))
         .catch(e => res.status(500).json(e));
 };
