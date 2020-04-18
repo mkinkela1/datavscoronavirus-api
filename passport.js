@@ -47,7 +47,7 @@ passport.use(new JWTStrategy({
 
         //find the user in db if needed
         return DoctorModel
-            .findOne(jwtPayload.id)
+            .findOne({ _id: jwtPayload._id })
             .then(user => {
                 return cb(null, user);
             })
