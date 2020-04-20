@@ -1,7 +1,8 @@
 const jwt      = require('jsonwebtoken');
 const passport = require('passport');
+const bcrypt = require('bcryptjs');
 
-const {TOKEN_SECRET_KEY, TOKEN_LIFE, REFRESH_TOKEN_SECRET_KEY, REFRESH_TOKEN_LIFE} = process.env;
+const {TOKEN_SECRET_KEY, TOKEN_LIFE, REFRESH_TOKEN_SECRET_KEY, REFRESH_TOKEN_LIFE, RESET_PASSWORD_TOKEN_SECRET_KEY, RESET_PASSWORD_TOKEN_LIFE} = process.env;
 
 const Doctor = require('./../models/doctor');
 const Mailer = require('./../services/ForgotPassword');
@@ -68,9 +69,25 @@ exports.forgotPassword = (req, res, next) => {
                 res.status(404).json('Not found');
             else {
 
-                Mailer
-                    .sendEmail()
-                    .then(() => res.status(201).json(r));
+                const data = {
+                    _id: r._id,
+                    firstName: r.firstName,
+                    lastName: r.lastName
+                };
+
+                const resetPasswordToken = jwt.sign(data, RESET_PASSWORD_TOKEN_SECRET_KEY, { expiresIn: RESET_PASSWORD_TOKEN_LIFE });
+
+                Doctor
+                    .findOneAndUpdate(
+                        { email },
+                        { resetPasswordToken },
+                        { returnOriginal: false, new: true, upsert: true }
+                    ).then(doctor => {
+
+                        Mailer
+                            .sendEmail(email, resetPasswordToken)
+                            .then(() => res.status(201).json(r));
+                    });
             }
         })
         .catch(e => res.status(500).json(e));
@@ -83,7 +100,38 @@ exports.forgotPassword = (req, res, next) => {
  * @param res
  * @param next
  */
-exports.resetPassword = (req, res, next) => {};
+exports.resetPassword = (req, res, next) => {
+
+    const { resetPasswordToken, newPassword } = req.body;
+
+    Doctor
+        .findOne({ resetPasswordToken })
+        .then(doctor => {
+            if(doctor === null)
+                return res.status(404).json('Doctor not found');
+
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newPassword, salt, (e, hash) => {
+
+                    if(e)
+                        return res.status(500).json(e);
+                    else {
+
+                        Doctor
+                            .findOneAndUpdate(
+                                { _id: doctor._id },
+                                { password: hash, resetPasswordToken: null },
+                                { returnOriginal: false, new: true, upsert: true }
+                            )
+                            .then(r => res.status(200).json(r))
+                            .catch(e => res.status(500).json(e));
+                    }
+                })
+            });
+
+        })
+        .catch(e => res.status(500).json(e));
+};
 
 /**
  * Refresh tokens

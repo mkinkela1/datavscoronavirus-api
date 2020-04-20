@@ -63,7 +63,22 @@ paths:
             $ref: '#definitions/refreshTokenResponseModel'
         401:
           description: Token not valid
-
+  /api/auth/reset-password:
+    put:
+      summary: Reset password
+      tags:
+        - Auth
+      parameters:
+        - in: body
+          name: body
+          require: true
+          schema:
+            $ref: '#definitions/resetPasswordRequestModel'
+      responses:
+        404:
+          description: Doctor not found
+        200:
+          description: Password updated
 
 definitions:
   authRequestModel:
@@ -111,3 +126,13 @@ definitions:
           refreshToken:
             type: string
             example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTg5MTg5NGUwNmZjYjE4NTFmMzFhYzkiLCJmaXJzdE5hbWUiOiJQZXJvIiwibGFzdE5hbWUiOiJQZXJpYyIsImVtYWlsIjoiZXhhbXBsZUBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRNSGZ1WWZURy9ObEpteUZGeDdBVzJ1TU16NHpYNFpSQ3pEOGRqNlpGUEhIUHhTbEZydVhXbSIsImNpdHlPclJlZ2lvbiI6IlphZ3JlYiIsImhvc3BpdGFsTmFtZSI6IktCQyBSZWJybyIsImNvdW50cnkiOiJDcm9hdGlhIiwiX192IjowLCJpYXQiOjE1ODYwNDc2MDQsImV4cCI6MTU4NjY1MjQwNH0.VDaFpUDEYfU0rGjZuSgveJqMAWmhwZY8V5TZTYLmHR8
+  resetPasswordRequestModel:
+    type: object
+    properties:
+      resetPasswordToken:
+        type: string
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTliNDM5YjgxOGE1NTI2NWQ0YmE5YjkiLCJmaXJzdE5hbWUiOiJQZXJhIiwibGFzdE5hbWUiOiJQZXJpYyIsImlhdCI6MTU4NzM4ODI2NywiZXhwIjoxNTg3NTYxMDY3fQ.N3bnyPpr4ya0VCoLXuQHjmyJnAqJq_ZjKB3z1AIxxg8
+      newPassword:
+        type: string
+        example: abcdef
+
