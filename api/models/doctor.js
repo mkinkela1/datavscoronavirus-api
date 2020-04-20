@@ -21,9 +21,9 @@ const doctorSchema = mongoose.Schema({
     password: { type: String, required: true },
     cityOrRegion: { type: String, required: false },
     country: { type: String, required: false },
-    refreshToken: { type: String, required: false },
     hospital: { type: mongoose.Schema.Types.ObjectId, ref: 'Hospital', required: false },
-    role: { type: String, enum: ['superAdmin', 'hospitalAdmin', 'doctor'], default: 'doctor' }
+    role: { type: String, enum: ['superAdmin', 'hospitalAdmin', 'doctor'], default: 'doctor' },
+    resetPasswordToken: { type: String, required: false }
 });
 
 module.exports = mongoose.model('Doctor', doctorSchema);
