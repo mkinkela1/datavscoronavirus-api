@@ -116,8 +116,9 @@ exports.exportPatientsInCsv = (req, res, next) => {
 
     Patient
         .find({})
-        .populate('warningScores')
-        .populate('patientRelevantData')
+        .populate('warningScores', '-__v')
+        .populate('patientRelevantData', '-__v')
+        .select('-__v')
         .exec()
         .then(patients => {
 
@@ -131,6 +132,10 @@ exports.exportPatientsInCsv = (req, res, next) => {
                     if(!['firstName', 'lastName', 'address', 'contact'].includes(key))
                         filteredPatient[key] = value;
 
+                filteredPatient['_id'] = patient._id.toString();
+
+                filteredPatient.warningScores = patient.warningScores.map(warningScore => { return { ...warningScore.toJSON(), _id: warningScore._id.toString() }});
+                filteredPatient.patientRelevantData = patient.patientRelevantData.map(patientRelevantData => { return { ...patientRelevantData.toJSON(), _id: patientRelevantData._id.toString() }});
 
                 patientsData = [...patientsData, filteredPatient];
             }
