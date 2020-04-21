@@ -79,6 +79,22 @@ paths:
           description: Doctor not found
         200:
           description: Password updated
+  /api/auth/logout:
+    post:
+      summary: Log out
+      tags:
+        - Auth
+      parameters:
+        - in: body
+          name: body
+          require: true
+          schema:
+            $ref: '#definitions/logoutRequestModel'
+      responses:
+        200:
+          description: Log out
+          schema:
+            $ref: '#definitions/logoutResponseModel'
 
 definitions:
   authRequestModel:
@@ -135,4 +151,24 @@ definitions:
       newPassword:
         type: string
         example: abcdef
-
+  logoutRequestModel:
+    type: object
+    properties:
+      token:
+        type: string
+        example: abc
+      refreshToken:
+        type: string
+        example: abcd
+  logoutResponseModel:
+    type: object
+    properties:
+      _id:
+        type: string
+        example: 142t423c23
+      token:
+        type: string
+        example: abc
+      refreshToken:
+        type: string
+        example: abcd

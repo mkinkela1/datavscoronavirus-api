@@ -48,5 +48,8 @@
     "chai-http": "^4.3.0",
     "mocha": "^7.1.1",
     "nodemon": "^2.0.2"
+  },
+  "nodemonConfig": {
+    "ext": "*"
   }
 }

@@ -6,6 +6,8 @@ const {TOKEN_SECRET_KEY, TOKEN_LIFE, REFRESH_TOKEN_SECRET_KEY, REFRESH_TOKEN_LIF
 
 const Doctor = require('./../models/doctor');
 const Mailer = require('./../services/ForgotPassword');
+const TokenBlacklist = require('./../models/tokenBlacklist');
+const Mongoose = require("mongoose");
 
 const { RefreshToken } = require("../services/refreshToken");
 const RefreshTokenService = new RefreshToken();
@@ -167,4 +169,27 @@ exports.refreshToken = (req, res, next) => {
         return res.status(401).json('Refresh token not valid');
     }
 
+};
+
+/**
+ * Store tokens that are not expired to blacklist
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.logout = (req, res, next) => {
+
+    const { token, refreshToken } = req.body;
+
+    let tokenList = [];
+    if(token)
+        tokenList.push({ _id: new Mongoose.Types.ObjectId(), token });
+    if(refreshToken)
+        tokenList.push({ _id: new Mongoose.Types.ObjectId(), token: refreshToken });
+
+    TokenBlacklist
+        .create(tokenList)
+        .then(r => res.status(201).json(r))
+        .catch(e => res.status(500).json(e));
 };
