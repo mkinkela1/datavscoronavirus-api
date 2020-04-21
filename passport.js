@@ -35,7 +35,6 @@ passport.use('login', new LocalStrategy({
                 });
             })
             .catch(err => {
-                console.log(err);
                 return cb(err);
             });
     }
@@ -54,7 +53,7 @@ passport.use(new JWTStrategy({
             .then(r => {
 
                 if(r !== null)
-                    throw new Error('Unauthorized');
+                    return cb(null, null);
 
                 return DoctorModel
                     .findOne({ _id: jwtPayload._id })
@@ -62,7 +61,7 @@ passport.use(new JWTStrategy({
                         return cb(null, user);
                     })
                     .catch(err => {
-                        return cb(err);
+                        return cb(err, false);
                     });
             })
             .catch(err => {
